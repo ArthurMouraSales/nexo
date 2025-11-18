@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
 from django import forms
 from nexo.models import PacienteProfile 
@@ -67,3 +67,25 @@ class CustomUserCreationForm(UserCreationForm):
             profile.save()
 
         return user
+    
+
+class CustomUserChangeForm(UserChangeForm):
+    #form to change existing users (admin page)
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email', 
+            'nome_completo', 
+            'cpf', 
+            'data_nascimento', 
+            'contato',
+            'nome_social',
+            'genero',
+            'nome_responsavel',
+            'status',
+            'is_active', 
+            'is_staff', 
+            'is_superuser',
+            'groups',
+            'user_permissions'
+        )
