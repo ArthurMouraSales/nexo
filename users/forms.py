@@ -18,7 +18,7 @@ class CustomUserCreationForm(UserCreationForm):
     genero = forms.CharField(max_length=50, required=False)
     nome_responsavel = forms.CharField(max_length=100, required=False)
 
-    grau_tea_choices = [('nivel 1', 'Nível 1'), ('nivel 2', 'Nível 2'), ('nivel 3', 'Nível 3')]
+    grau_tea_choices = [('nivel 1', 'Nível 1'), ('nivel 2', 'Nível 2'), ('nivel 3', 'Nível 3'), ("indefinido", 'Indefinido')]
     grau_tea = forms.ChoiceField(choices=grau_tea_choices)
 
     tipo_sanguineo_choices = [('A+', 'A+'), ('A-', 'A-'), ('B+', 'B-'), ('B-', 'B-'), ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')]

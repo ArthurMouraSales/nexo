@@ -1,8 +1,6 @@
 {% load static %}
-
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -16,56 +14,64 @@
             <h1 class="brand">Criar Conta</h1>
             <p class="subtitle">Preencha os dados do usuário e do responsável</p>
 
-            <form id="registerForm" class="stack">
-                <div class="input-group"><input id="nome" type="text" placeholder=" " required /><label for="nome">Nome completo</label></div>
+            <form id="registerForm" class="stack" method="POST">
+                {% csrf_token %}
 
-                <div class="row gap">
-                    <div style="flex:1">
-                        <div class="input-group"><input id="nascimento" type="date" placeholder=" " required /><label for="nascimento">Data de nascimento</label></div>
-                    </div>
-                    <div style="width:110px">
-                        <div class="input-group"><input id="idade" type="number" min="1" placeholder=" " required /><label for="idade">Idade</label></div>
-                    </div>
-                </div>
+                {{ form.non_field_errors }}
 
                 <div class="input-group">
-                    <select id="grauTea" required>
-            <option value="" disabled selected>Selecione o grau do TEA</option>
-            <option value="nivel1">Leve — Nível 1</option>
-            <option value="nivel2">Moderado — Nível 2</option>
-            <option value="nivel3">Severo — Nível 3</option>
-            <option value="indef">Indeterminado / Não informado</option>
-          </select>
+                    <input id="nome" name="nome_completo" type="text" placeholder=" " required />
+                    <label for="nome">Nome completo</label>
+                </div>
+                {{ form.nome_completo.errors }} <div class="row gap">
+                    <div style="flex:1">
+                        <div class="input-group">
+                            <input id="nascimento" name="data_nascimento" type="date" placeholder=" " required />
+                            <label for="nascimento">Data de nascimento</label>
+                        </div>
+                        {{ form.data_nascimento.errors }}
+                    </div>
+                    </div>
+
+                <div class="input-group">
+                    <select id="grauTea" name="grau_tea" required>
+                        <option value="" disabled selected>Selecione o grau do TEA</option>
+                        <option value="nivel 1">Leve — Nível 1</option>
+                        <option value="nivel 2">Moderado — Nível 2</option>
+                        <option value="nivel 3">Severo — Nível 3</option>
+                    </select>
                     <label for="grauTea">Grau do TEA</label>
                 </div>
+                {{ form.grau_tea.errors }}
+                
+                <div class="input-group">
+                    <input id="emailCadastro" name="email" type="email" placeholder=" " required />
+                    <label for="emailCadastro">Email</label>
+                </div>
+                {{ form.email.errors }}
 
                 <div class="input-group">
-                    <select id="papel" required>
-            <option value="usuario">Pessoa com TEA</option>
-            <option value="responsavel">Responsável</option>
-            <option value="terapeuta">Terapeuta / Profissional</option>
-          </select>
-                    <label for="papel">Papel</label>
+                    <input id="telefone" name="contato" type="tel" placeholder=" " />
+                    <label for="telefone">Telefone</label>
                 </div>
+                {{ form.contato.errors }}
 
-                <div class="input-group"><input id="emailCadastro" type="email" placeholder=" " required /><label for="emailCadastro">Email</label></div>
-                <div class="input-group"><input id="telefone" type="tel" placeholder=" " /><label for="telefone">Telefone</label></div>
-
-                <div class="input-group"><input id="senhaCadastro" type="password" placeholder=" " required oninput="App.validatePassword('senhaCadastro','erroSenhaCadastro','btnCadastrar')" /><label for="senhaCadastro">Senha</label></div>
-                <div id="erroSenhaCadastro" class="error small"></div>
-
-                <div class="input-group"><input id="confirmarSenhaCadastro" type="password" placeholder=" " required /><label for="confirmarSenhaCadastro">Confirmar senha</label></div>
-                <div id="erroConfirmarCadastro" class="error small"></div>
-
-                <div class="checkbox">
-                    <input id="consent" type="checkbox" />
-                    <label for="consent" class="small">Autorizo o uso local dos dados para fins de acompanhamento (protótipo).</label>
+                <div class="input-group">
+                    <input id="senhaCadastro" name="password" type="password" placeholder=" " required />
+                    <label for="senhaCadastro">Senha</label>
                 </div>
+                {{ form.password.errors }}
 
-                <button id="btnCadastrar" class="btn primary" type="submit" disabled>Cadastrar</button>
+                <div class="input-group">
+                    <input id="confirmarSenhaCadastro" name="password2" type="password" placeholder=" " required />
+                    <label for="confirmarSenhaCadastro">Confirmar senha</label>
+                </div>
+                {{ form.password2.errors }}
+
+                <button id="btnCadastrar" class="btn primary" type="submit">Cadastrar</button>
 
                 <div class="row small-links">
-                    <a class="link" href="autenticacao">Voltar ao login</a>
+                    <a class="link" href="{% url 'login' %}">Voltar ao login</a>
                 </div>
             </form>
         </section>
@@ -73,5 +79,4 @@
 
     <script src="{% static 'script.js' %}"></script>
 </body>
-
 </html>
