@@ -1,48 +1,36 @@
 from django.db import models
+from users.models import CustomUser
 
-class cadastro(models.Model):
-    nome_completo = models.CharField(max_length=100, null=False)
-    email = models.EmailField(unique=True, null=False)
-    telefone = models.CharField(max_length=15, null=False)
-    data_nascimento = models.DateField(null=False)
-    senha = models.CharField(max_length=128, null=False)
-    nome_social = models.CharField(max_length=100)
-    genero = models.CharField(max_length=50)
-    cpf = models.CharField(max_length=14, unique=True, null=False)
-    nome_responsavel = models.CharField(max_length=100)
+class PacienteProfile(models.Model):
 
-    status_choices = [('ativo', 'Ativo'), ('desativado', 'Desativado'), ('suspenso', 'Suspenso'), ('cancelado', 'Cancelado')]
-    status = models.CharField(max_length=20, choices=status_choices, default='ativo')
-    observacoes = models.TextField(blank=True)
-    
+    #sync with CustomUser
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='paciente_profile')
+
+    #endereço fields
     cep = models.CharField(max_length=10, null=False)
-    logradouro = models.CharField(max_length=100, null=False)
+    logradouro = models.CharField(max_length=150, null=False)
     numero = models.CharField(max_length=10, null=False)
-    complemento = models.CharField(max_length=100, blank=True)
+    complemento = models.CharField(max_length=150, blank=True)
     bairro = models.CharField(max_length=100, null=False)
     municipio = models.CharField(max_length=100, null=False)
-    uf = models.CharField(max_length=2, null=False)
+    uf = models.CharField(max_length=2, null=False)  # Estado
 
-    grau_tea = [('nivel 1', 'Nível 1'), ('nivel 2', 'Nível 2'), ('nivel 3', 'Nível 3')]
-    grau_tea = models.CharField(max_length=20, choices=grau_tea, null=False)
+    #medical fields
+    grau_tea_choices = [('nivel 1', 'Nível 1'), ('nivel 2', 'Nível 2'), ('nivel 3', 'Nível 3')]
+    grau_tea = models.CharField(max_length=20, choices=grau_tea_choices, null=False)
     comorbidades = models.TextField(blank=True)
-    tipo_sanguineo = [('A+', 'A+'), ('A-', 'A-'), ('B+', 'B-'), ('B-', 'B-'), ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')]
-    tipo_sanguineo = models.CharField(max_length=3, choices=tipo_sanguineo, null=False)
-    peso = models.DecimalField(max_digits=5, decimal_places=2, null=False)
-    altura = models.DecimalField(max_digits=4, decimal_places=2, null=False)
+    tipo_sanguineo_choices = [ ('A+', 'A+'), ('A-', 'A-'), ('B+', 'B-'), ('B-', 'B-'), ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-'),]
+    tipo_sanguineo = models.CharField(max_length=3, choices=tipo_sanguineo_choices, null=False)
     alergias = models.TextField(blank=True)
+    altura = models.DecimalField(max_digits=5, decimal_places=2, null=False)  # in cm
+    peso = models.DecimalField(max_digits=6, decimal_places=2, null=False)  # in kg
+    medicacoes = models.TextField(blank=True)
+    observacoes = models.TextField(blank=True)
 
+    #chamar nome completo do usuário ao inves do user (admin functionality)
+    def __str__(self):
+        return self.user.nome_completo
 
-class autenticacao(models.Model):
-    email = models.EmailField(unique=True, null=False)
-    senha = models.CharField(max_length=128, null=False)
-
-class recuperacao_senha(models.Model):
-    email = models.EmailField(unique=True, null=False)
-    token = models.CharField(max_length=64, null=False)
-    telefone = models.CharField(max_length=15, null=False)
-    nova_senha = models.CharField(max_length=128, null=False)
-    confirmar_senha = models.CharField(max_length=128, null=False)
 
 class relatorio(models.Model):
     nome_completo = models.CharField(max_length=100, null=False)
