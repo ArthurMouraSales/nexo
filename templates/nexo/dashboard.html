@@ -1,4 +1,25 @@
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Sair (Logout)</button>
-</form>
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    </head>
+<body>
+    <main class="app-shell">
+        <h1>Olá, {{ user.nome_completo|default:user.email }}!</h1>
+        <p>Bem-vindo ao seu painel Nexo.</p>
+
+        <a href="{% url 'calendario' %}" class="btn primary">
+            Acessar meu Calendário
+        </a>
+        
+        <a href="{% url 'gerar_relatorio_pdf' %}" class="btn primary" style="background-color: #03a9f4;">
+            Baixar Relatório (PDF)
+        </a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn secondary">Sair</button>
+        </form>
+    </main>
+</body>
+</html>
