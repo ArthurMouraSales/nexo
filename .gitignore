@@ -1,0 +1,17 @@
+# Ambiente Virtual
+.venv/
+venv/
+*.pyc
+
+# Arquivos de Sistema
+.DS_Store
+
+# Arquivos de IDE (VS Code)
+.vscode/
+
+# Arquivos de Log e Banco de Dados (se você usar sqlite localmente)
+*.log
+db.sqlite3
+
+# Arquivos de mídia (se você tiver uma pasta de uploads)
+/media/
