@@ -89,3 +89,20 @@ class CustomUserChangeForm(UserChangeForm):
             'groups',
             'user_permissions'
         )
+
+        error_messages = {
+            'email': {
+                'unique': "Um usuário com este email já existe.",
+                'invalid': "Insira um endereço de email válido.",
+            },
+            'cpf': {
+                'unique': "Um usuário com este CPF já existe.",
+                'invalid': "Insira um CPF válido com 11 dígitos.",
+            },
+            'data_nascimento': {
+                'invalid': "Insira uma data de nascimento válida.",
+            },
+            'password2': {
+                'mismatch': "As senhas não coincidem.",
+            },
+        }
