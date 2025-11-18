@@ -69,3 +69,7 @@ class relatorio(models.Model):
     conquistas_obtidas = models.TextField("Conquistas Obtidas", blank=True, null=True)
     pontuacao_acumulada = models.FloatField("Pontuação Acumulada", default=0.0)
     estatisticas_engajamento = models.TextField("Estatísticas de Engajamento (Frequência de Uso)", blank=True, null=True)
+
+
+class RegistroCalendario(models.Model):
+    pass
