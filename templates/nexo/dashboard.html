@@ -2,7 +2,11 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    </head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NEXO — Dashboard</title>
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
+</head>
 <body>
     <main class="app-shell">
         <h1>Olá, {{ user.nome_completo|default:user.email }}!</h1>
@@ -12,7 +16,7 @@
             Acessar meu Calendário
         </a>
         
-        <a href="{% url 'gerar_relatorio_pdf' %}" class="btn primary" style="background-color: #03a9f4;">
+        <a href="{% url 'relatorio_pdf' %}" class="btn primary" style="background-color: #03a9f4;">
             Baixar Relatório (PDF)
         </a>
 

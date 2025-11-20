@@ -6,7 +6,7 @@ from simple_history.models import HistoricalRecords
 class PacienteProfile(models.Model):
 
     #sync with CustomUser
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='paciente_profile')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='perfil')
 
     #endereço fields
     cep = models.CharField(max_length=10, null=False)

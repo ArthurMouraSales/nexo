@@ -1,54 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Nexo</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
 <body>
     <div class="pagina">
-        <div class="lado-esquerdo">
-            <div class="logo">
-                <div class="icone-logo">N</div>
-                <div class="texto-logo">
-                    <div class="nome-logo">Nexo</div>
-                    <div class="slogan">Conexão 2 Ciência</div>
-                </div>
-            </div>
-            <div class="vantagens">
-                <div class="vantagem">
-                    <div class="icone-vantagem">C</div>
-                    <div>Conteúdos científicos</div>
-                </div>
-                <div class="vantagem">
-                    <div class="icone-vantagem">R</div>
-                    <div>Rede de pesquisadores</div>
-                </div>
-            </div>
-        </div>
-
+        <div class="logo">
+            <div class="icone-logo"><img src="{% static 'logo.jpg' %}"></div>
+            <div class="texto-logo"></div>
+        </div>     
         <div class="lado-direito">
             <h2 class="titulo-principal">Fazer login</h2>
             <p class="subtitulo">Acesse sua conta</p>
 
-            <form>
+            <form method="POST" action="{% url 'login' %}" id="formularioLogin">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="mensagem erro">Usuário ou senha incorretos.</div>
+                {% endif %}
+
                 <div class="linha-formulario">
                     <div class="grupo-formulario">
                         <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="seu@email.com" required>
+                        <input type="email" id="email" name="username" placeholder="seu@email.com" required>
                     </div>
                 </div>
 
                 <div class="linha-formulario">
                     <div class="grupo-formulario">
                         <label for="senha">Senha</label>
-                        <input type="password" id="senha" placeholder="Sua senha" required>
+                        <input type="password" id="senha" name="password" placeholder="Sua senha" required>
                     </div>
                 </div>
 
                 <button type="submit" class="botao botao-principal">Entrar</button>
-                <a href="esqueci-senha.html" class="esqueci-senha">Esqueci minha senha</a>
+                    
+                <div class="divisor">Não tem conta?</div>
+                <a href="{% url 'cadastro' %}" class="botao botao-secundario" style="text-align:center; text-decoration:none; display:block; box-sizing:border-box;">Criar conta</a>
             </form>
 
             <div class="divisor">Não tem conta?</div>
@@ -56,5 +48,5 @@
         </div>
     </div>
 </body>
-<script src="codigo-cadastro.js"></script>
+<script src="{% static 'codigo-login.js' %}"></script>
 </html>
