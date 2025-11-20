@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'nexo',
     'users',
+    'simple_history',
 ]
 
 MIDDLEWARE = [

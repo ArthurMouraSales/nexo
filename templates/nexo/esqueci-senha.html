@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - Nexo</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="pagina">
+        <div class="lado-esquerdo">
+            <div class="logo">
+                <div class="icone-logo">N</div>
+                <div class="texto-logo">
+                    <div class="nome-logo">Nexo</div>
+                    <div class="slogan">Conexão & Ciência</div>
+                </div>
+            </div>
+
+            <div class="vantagens">
+                <div class="vantagem">
+                    <div class="icone-vantagem">🔬</div>
+                    <div>Conteúdos científicos exclusivos</div>
+                </div>
+                <div class="vantagem">
+                    <div class="icone-vantagem">👥</div>
+                    <div>Rede de colaboração entre pesquisadores</div>
+                </div>
+                <div class="vantagem">
+                    <div class="icone-vantagem">📊</div>
+                    <div>Análise de dados avançada</div>
+                </div>
+                <div class="vantagem">
+                    <div class="icone-vantagem">📚</div>
+                    <div>Biblioteca virtual especializada</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lado-direito">
+            <h2 class="titulo-principal">Recuperar Senha</h2>
+            <p class="subtitulo">Digite seu email para redefinir sua senha</p>
+
+            <form id="formularioRecuperacao">
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="emailRecuperacao">Email cadastrado</label>
+                        <input type="email" id="emailRecuperacao" placeholder="seu@email.com" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="botao botao-principal">Enviar código de recuperação</button>
+            </form>
+
+            <div class="divisor">
+                <span>Lembrou sua senha?</span>
+            </div>
+
+            <button class="botao botao-secundario" onclick="window.location.href='login.html'">Fazer login</button>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="codigo-cadastro.js"></script>
+</html>

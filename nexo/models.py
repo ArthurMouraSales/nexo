@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import CustomUser
+from django.conf import settings
+from simple_history.models import HistoricalRecords
 
 class PacienteProfile(models.Model):
 
@@ -72,4 +74,34 @@ class relatorio(models.Model):
 
 
 class RegistroCalendario(models.Model):
-    pass
+    paciente = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='registros_calendario'
+    )
+    
+    data_selecionada = models.DateField()
+    
+    # Campos de texto para as atividades
+    resumo_diario = models.TextField(blank=True, null=True)
+    descricao_matutino = models.TextField(blank=True, null=True)
+    descricao_vespertino = models.TextField(blank=True, null=True)
+    descricao_noturno = models.TextField(blank=True, null=True)
+    
+    status_dia = models.CharField(max_length=20, default='Não preenchido')
+    
+    responsavel_pelo_registro = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name='registros_feitos'
+    )
+    
+    ultima_atualizacao = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+
+    class Meta:
+        unique_together = ('paciente', 'data_selecionada')
+
+    def __str__(self):
+        return f"{self.paciente} - {self.data_selecionada}"
