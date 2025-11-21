@@ -7,38 +7,12 @@
     <title>Recuperar Senha - Nexo</title>
     <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
-<body>
+<body class="dark-theme">
     <div class="pagina">
-        <div class="lado-esquerdo">
-            <div class="logo">
-                <div class="icone-logo">N</div>
-                <div class="texto-logo">
-                    <div class="nome-logo">Nexo</div>
-                    <div class="slogan">Conexão & Ciência</div>
-                </div>
-            </div>
-
-            <div class="vantagens">
-                <div class="vantagem">
-                    <div class="icone-vantagem">🔬</div>
-                    <div>Conteúdos científicos exclusivos</div>
-                </div>
-                <div class="vantagem">
-                    <div class="icone-vantagem">👥</div>
-                    <div>Rede de colaboração entre pesquisadores</div>
-                </div>
-                <div class="vantagem">
-                    <div class="icone-vantagem">📊</div>
-                    <div>Análise de dados avançada</div>
-                </div>
-                <div class="vantagem">
-                    <div class="icone-vantagem">📚</div>
-                    <div>Biblioteca virtual especializada</div>
-                </div>
-            </div>
-        </div>
-
         <div class="lado-direito">
+            <div class="logo">
+                <div class="icone-logo"><img src="{% static 'logo.jpg' %}"></div>
+            </div>  
             <h2 class="titulo-principal">Recuperar Senha</h2>
             <p class="subtitulo">Digite seu email para redefinir sua senha</p>
 
@@ -57,7 +31,7 @@
                 <span>Lembrou sua senha?</span>
             </div>
 
-            <button class="botao botao-secundario" onclick="window.location.href='login.html'">Fazer login</button>
+            <a href="{% url 'login' %}" class="botao botao-secundario">Fazer login</a>
 
             </div>
         </div>

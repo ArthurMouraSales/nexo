@@ -1,108 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const senhaInput = document.getElementById('senha');
-    const barraForca = document.querySelector('.barra-forca');
-    const textoForca = document.querySelector('.texto-forca');
+    let passoAtual = 1;
+
+    // MÁSCARAS
     const cpfInput = document.getElementById('cpf');
-
-
-    document.querySelectorAll('.botao-mostrar').forEach(botao => {
-        botao.addEventListener('click', function() {
-            const inputSenha = this.previousElementSibling;
-            if (inputSenha.type === 'password') {
-                inputSenha.type = 'text';
-                this.textContent = '👁️';
-            } else {
-                inputSenha.type = 'password';
-                this.textContent = '👁️';
-            }
-        });
-    });
-
-
-    if (cpfInput){ 
-        cpfInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            
-            if (value.length > 11) {
-                value = value.substring(0, 11);
-            }
-            
-            if (value.length <= 11) {
-                value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                value = value.replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-                value = value.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-            }
-            
-            e.target.value = value;
-        });
-    }
-
-    if (senhaInput){
-        senhaInput.addEventListener('input', function() {
-            const senha = senhaInput.value;
-            let forca = 0;
-            let texto = 'Muito fraca';
-            let cor = '#e74c3c';
-
-            if (senha.length >= 8) forca += 25;
-            if (/[A-Z]/.test(senha)) forca += 25;
-            if (/[0-9]/.test(senha)) forca += 25;
-            if (/[^A-Za-z0-9]/.test(senha)) forca += 25;
-
-            if (forca >= 75) {
-                texto = 'Forte';
-                cor = '#27ae60';
-            } else if (forca >= 50) {
-                texto = 'Média';
-                cor = '#f39c12';
-            } else if (forca >= 25) {
-                texto = 'Fraca';
-                cor = '#e67e22';
-            }
-
-            barraForca.style.setProperty('--forca-width', forca + '%');
-            barraForca.style.setProperty('--forca-cor', cor);
-            textoForca.textContent = texto;
-            textoForca.style.color = cor;
-        });
-    }
-
-    const contatoInput = document.getElementById('contato');
-    if (contatoInput) {
-        contatoInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, ''); 
-            
-            if (value.length > 11) value = value.substring(0, 11);
-            
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
-            
-            e.target.value = value;
-        });
-    }
-
+    const telInput = document.getElementById('telefone');
     const cepInput = document.getElementById('cep');
-    if (cepInput) {
-        cepInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 8) value = value.substring(0, 8);
-            value = value.replace(/^(\d{5})(\d)/, '$1-$2'); 
-            e.target.value = value;
+
+    if(cpfInput) cpfInput.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '');
+        if(v.length > 11) v = v.substring(0, 11);
+        v = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+        e.target.value = v;
+    });
+
+    if(telInput) telInput.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '');
+        if(v.length > 11) v = v.substring(0, 11);
+        v = v.replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d)(\d{4})$/, '$1-$2');
+        e.target.value = v;
+    });
+
+    if(cepInput) cepInput.addEventListener('input', e => {
+        let v = e.target.value.replace(/\D/g, '');
+        if(v.length > 8) v = v.substring(0, 8);
+        v = v.replace(/^(\d{5})(\d)/, '$1-$2');
+        e.target.value = v;
+    });
+
+    // NAVEGAÇÃO
+    window.proximoPasso = function(idAtual) {
+        if(!validarPasso(idAtual)) return;
+        document.getElementById(`step-${idAtual}`).classList.remove('active');
+        passoAtual = idAtual + 1;
+        document.getElementById(`step-${passoAtual}`).classList.add('active');
+        atualizarTitulo();
+    };
+
+    window.voltarPasso = function(e) {
+        e.preventDefault();
+        if(passoAtual === 1) window.location.href = "/";
+        else {
+            document.getElementById(`step-${passoAtual}`).classList.remove('active');
+            passoAtual--;
+            document.getElementById(`step-${passoAtual}`).classList.add('active');
+            atualizarTitulo();
+        }
+    };
+
+    window.prepararEnvio = function() {
+        // Copia a senha para o campo de confirmação oculto
+        const s = document.getElementById('senha').value;
+        document.getElementById('hidden_password2').value = s;
+    };
+
+    function validarPasso(id) {
+        const div = document.getElementById(`step-${id}`);
+        const inputs = div.querySelectorAll('input[required], select[required]');
+        let valido = true;
+        inputs.forEach(inpt => {
+            if(!inpt.value.trim()) {
+                inpt.parentElement.style.border = '2px solid red';
+                setTimeout(() => inpt.parentElement.style.border = 'none', 2000);
+                valido = false;
+            }
         });
+        return valido;
     }
 
-    document.querySelectorAll('input, select').forEach(campo => {
-        campo.addEventListener('blur', function() {
-            if (this.value.trim() !== '') {
-                this.classList.remove('campo-invalido');
-                this.classList.add('campo-valido');
-            }
-        });
-        
-        campo.addEventListener('input', function() {
-            if (this.classList.contains('campo-invalido')) {
-                this.classList.remove('campo-invalido');
-            }
-        });
-    });
+    function atualizarTitulo() {
+        document.getElementById('titulo-passo').innerText = `Cadastro 0${passoAtual}`;
+    }
 });

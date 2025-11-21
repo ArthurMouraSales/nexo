@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
 
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = 'autenticacao_list.html';
         }, 3000);
     });
 
