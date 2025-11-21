@@ -17,6 +17,7 @@ urlpatterns = [
     path('calendario/', CalendarioView.as_view(), name='calendario'),
     #PDF Report route
     path('relatorio/download/', RelatorioPDFView.as_view(), name='relatorio_pdf'),
+    path('esqueci-senha/', SignUpView.as_view(), name='esqueci_senha'),
     #Admin
     path('admin/', admin.site.urls),
 ]

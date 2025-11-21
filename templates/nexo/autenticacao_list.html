@@ -7,13 +7,12 @@
     <title>Login - Nexo</title>
     <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
-<body>
+<body class="dark-theme">
     <div class="pagina">
-        <div class="logo">
-            <div class="icone-logo"><img src="{% static 'logo.jpg' %}"></div>
-            <div class="texto-logo"></div>
-        </div>     
         <div class="lado-direito">
+            <div class="logo">
+                <div class="icone-logo"><img src="{% static 'logo.jpg' %}"></div>
+            </div>     
             <h2 class="titulo-principal">Fazer login</h2>
             <p class="subtitulo">Acesse sua conta</p>
 
@@ -37,15 +36,14 @@
                     </div>
                 </div>
 
+                <a href="{% url 'esqueci_senha' %}" class="link esqueci-senha">Esqueci minha senha</a>
+
                 <button type="submit" class="botao botao-principal">Entrar</button>
                     
                 <div class="divisor">Não tem conta?</div>
-                <a href="{% url 'cadastro' %}" class="botao botao-secundario" style="text-align:center; text-decoration:none; display:block; box-sizing:border-box;">Criar conta</a>
+                <a href="{% url 'cadastro' %}" class="botao botao-secundario">Criar conta</a>
             </form>
 
-            <div class="divisor">Não tem conta?</div>
-            <button class="botao botao-secundario" onclick="window.location.href='cadastro.html'">Criar conta</button>
-        </div>
     </div>
 </body>
 <script src="{% static 'codigo-login.js' %}"></script>

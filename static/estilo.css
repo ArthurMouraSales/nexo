@@ -39,7 +39,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
     z-index: 2;
 }
 
@@ -196,6 +195,10 @@ input::placeholder {
 }
 
 .botao-secundario {
+    text-align:center; 
+    text-decoration:none; 
+    display:block; 
+    box-sizing:border-box;
     background: white;
     color: #667eea;
     border: 2px solid #667eea;
@@ -210,26 +213,37 @@ input::placeholder {
 }
 
 .esqueci-senha {
-    text-align: center;
-    margin-top: 20px;
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
     display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+
+    background-color: transparent;
+    border: 3px solid #ff0000;
+    border-radius: 12px;
+
+    color: #ff0000 !important;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .esqueci-senha:hover {
-    color: #764ba2;
-    text-decoration: underline;
-    transform: translateY(-1px);
+    background-color: #ff0000;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    transform: scale(1.02);
 }
 
 .divisor {
     text-align: center;
     margin: 30px 0;
     position: relative;
-    color: #666;
+    color: #ffffff;
     font-weight: 600;
     font-size: 20px;
 }
