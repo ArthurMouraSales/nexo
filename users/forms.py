@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
+from datetime import date
 from .models import Usuario
 from nexo.models import PerfilPaciente
 
@@ -32,6 +33,15 @@ class CadastroUsuarioForm(UserCreationForm):
         model = Usuario
         fields = ('email', 'nome_completo', 'cpf', 'data_nascimento')
 
+    def data_nascimento_certa(self):
+        data_nascimento = self.cleaned_data.get('data_nascimento')
+        if data_nascimento:
+            hoje = date.today()
+            idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
+            if idade < 13:
+                raise forms.ValidationError("O usuário deve ter pelo menos 13 anos.")
+        return data_nascimento
+
     @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -62,7 +72,3 @@ class CadastroUsuarioForm(UserCreationForm):
         )
         return user
 
-class EdicaoUsuarioAdminForm(UserChangeForm):
-    class Meta:
-        model = Usuario
-        fields = '__all__'

@@ -128,3 +128,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 #CUSTOM USER MODEL
 AUTH_USER_MODEL = 'users.Usuario'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrCPFBackend', 
+    'django.contrib.auth.backends.ModelBackend', 
+]

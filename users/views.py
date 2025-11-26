@@ -11,7 +11,7 @@ class InicioView(TemplateView):
 class CadastroView(CreateView):
     form_class = CadastroUsuarioForm 
     success_url = reverse_lazy('cadastro_sucesso') 
-    template_name = 'nexo/cadastro_list.html'
+    template_name = 'nexo/cadastro_completo.html'
 
 class CadastroSucessoView(TemplateView):
     template_name = 'nexo/cadastro_sucesso.html'
