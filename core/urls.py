@@ -10,7 +10,7 @@ urlpatterns = [
     path('', LoginView.as_view(), name='autenticacao'), 
     path('cadastro/', CadastroView.as_view(), name='cadastro'), 
     path('cadastro_sucesso/', CadastroSucessoView.as_view(), name='cadastro_sucesso'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='autenticacao'), name='logout'),
     path('esqueci_senha/', TemplateView.as_view(template_name='nexo/esqueci_senha.html'), name='esqueci_senha'),
     path('recuperacao/', RecuperacaoSolicitarView.as_view(), name='recuperacao_solicitar'),
     path('recuperacao/validar/', RecuperacaoValidarView.as_view(), name='recuperacao_validar'),

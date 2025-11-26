@@ -38,7 +38,7 @@ class CadastroUsuarioForm(UserCreationForm):
         if data_nascimento:
             hoje = date.today()
             idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
-            if idade < 13:
+            if idade <= 13:
                 raise forms.ValidationError("O usuário deve ter pelo menos 13 anos.")
         return data_nascimento
 

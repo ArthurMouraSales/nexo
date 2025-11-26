@@ -10,7 +10,6 @@ class EmailOrCPFBackend(ModelBackend):
             username = kwargs.get(UserModel.USERNAME_FIELD)
         
         try:
-            # Tenta buscar por email ou CPF
             user = UserModel.objects.get(Q(email=username) | Q(cpf=username))
         except UserModel.DoesNotExist:
             return None
