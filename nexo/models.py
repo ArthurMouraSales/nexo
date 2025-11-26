@@ -25,7 +25,6 @@ class PerfilPaciente(models.Model):
     medicacoes = models.TextField(blank=True)
     observacoes = models.TextField(blank=True)
 
-    #chamar nome completo do usuário ao inves do usuario
     def __str__(self):
         return self.user.nome_completo
 

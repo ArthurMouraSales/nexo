@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import TemplateView
+from django.conf import settings
+from django.views.generic import TemplateView, RedirectView
 from users.views import LoginView, CadastroView, InicioView, CadastroSucessoView
 from nexo.views import DashboardView, CalendarioView, RelatorioPDFView
 from django.contrib.auth.views import LogoutView 
@@ -17,6 +18,8 @@ urlpatterns = [
     path('calendario/', CalendarioView.as_view(), name='calendario'),
     path('relatorio/download/', RelatorioPDFView.as_view(), name='relatorio_pdf'),
     
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),
     path('admin/', admin.site.urls),
+
 ]
 
