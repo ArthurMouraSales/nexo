@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário - Resumo Diário</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calendário </h1>
+        </div>
+        
+        <div class="calendar-section">
+            <h2 class="section-title">Calendário</h2>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button class="nav-btn" id="prevMonth">&lt;</button>
+                        <button class="nav-btn" id="todayBtn">Hoje</button>
+                        <button class="nav-btn" id="nextMonth">&gt;</button>
+                    </div>
+                    <div class="current-month" id="currentMonth">Novembro 2023</div>
+                </div>
+                
+                <div class="weekdays">
+                    <div>Dom</div>
+                    <div>Seg</div>
+                    <div>Ter</div>
+                    <div>Qua</div>
+                    <div>Qui</div>
+                    <div>Sex</div>
+                    <div>Sáb</div>
+                </div>
+                <div class="days" id="calendarDays">
+                </div>
+            </div>
+        </div>
+        
+        <div class="daily-summary">
+            <h2 class="section-title" id="dailySummaryTitle">Resumo Diário</h2>
+            
+            <div class="time-slot" id="9:00AM">
+                <div class="time-header">
+                    <h3 class="time-title">9:00 AM</h3>
+                    <button class="add-btn">+</button>
+                </div>
+                <input type="text" class="activity-input" placeholder="Descrição da atividade">
+                <ul class="activity-list">
+                </ul>
+            </div>
+            
+            <div class="time-slot" id="14:00PM">
+                <div class="time-header">
+                    <h3 class="time-title">14:00 PM</h3>
+                    <button class="add-btn">+</button>
+                </div>
+                <input type="text" class="activity-input" placeholder="Descrição da atividade">
+                <ul class="activity-list">
+                </ul>
+            </div>
+            
+            <div class="time-slot" id="18:00PM">
+                <div class="time-header">
+                    <h3 class="time-title">18:00 PM</h3>
+                    <button class="add-btn">+</button>
+                </div>
+                <input type="text" class="activity-input" placeholder="Descrição da atividade">
+                <ul class="activity-list">
+                </ul>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalActivities">0</div>
+                <div class="stat-label">Total de Atividades</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedActivities">0</div>
+                <div class="stat-label">Atividades Concluídas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="productivityRate">0%</div>
+                <div class="stat-label">Taxa de Produtividade</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="calendario.js"></script>
+</body>
+</html>

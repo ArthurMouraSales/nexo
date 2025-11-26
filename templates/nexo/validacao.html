@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Identidade - Nexo</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nexo</h1>
+            <p>Conexão & Clareza</p>
+        </div>
+        
+        <div class="content">
+            <a class="back-link" href="recuperacao.html">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </a>
+            
+            <div class="welcome">
+                <h2>Verifique sua Identidade</h2>
+                <p>Como você prefere receber o código de verificação</p>
+            </div>
+
+            <div class="user-info">
+                <p>Verificando identidade para: <strong>usuario@gmail.com</strong></p>
+            </div>
+            
+            <div class="verification-options">
+                <label class="verification-option" id="option-email">
+                    <input type="radio" name="verification-method" value="email">
+                    <div class="option-content">
+                        <div class="option-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Enviar para o email</div>
+                            <div class="option-description">usuario@gmail.com</div>
+                        </div>
+                        <div class="option-check"></div>
+                    </div>
+                </label>
+                
+                <label class="verification-option" id="option-sms">
+                    <input type="radio" name="verification-method" value="sms">
+                    <div class="option-content">
+                        <div class="option-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 2H7C5.89543 2 5 2.89543 5 4V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V4C19 2.89543 18.1046 2 17 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 18H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Enviar SMS para o telefone</div>
+                            <div class="option-description">(xx) *******</div>
+                        </div>
+                        <div class="option-check"></div>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <button id="send-btn" class="btn" disabled>Enviar</button>
+            
+            <div class="instructions">
+                <p>O código de verificação expira em 10 minutos</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emailOption = document.getElementById('option-email');
+        const smsOption = document.getElementById('option-sms');
+        const sendBtn = document.getElementById('send-btn');
+        let selectedMethod = null;
+
+        function selectVerificationMethod(method, element) {
+            document.querySelectorAll('.verification-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            selectedMethod = method;
+            
+            sendBtn.disabled = false;
+        }
+
+        emailOption.addEventListener('click', () => {
+            selectVerificationMethod('email', emailOption);
+        });
+
+        smsOption.addEventListener('click', () => {
+            selectVerificationMethod('sms', smsOption);
+        });
+
+        sendBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (!selectedMethod) {
+                alert('Por favor, selecione um método de verificação.');
+                return;
+            }
+            
+            sendBtn.classList.add('loading');
+            sendBtn.disabled = true;
+            
+            setTimeout(() => {
+                sendBtn.classList.remove('loading');
+                
+                alert(`Código enviado via ${selectedMethod.toUpperCase()}!`);
+            }, 2000);
+        });
+
+        window.addEventListener('load', () => {
+            selectVerificationMethod('email', emailOption);
+        });
+    </script>
+</body>
+</html>

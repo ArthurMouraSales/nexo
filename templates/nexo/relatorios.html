@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - NEXO</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NEXO</h1>
+            <p>Conteúdo e Ciência</p>
+        </div>
+
+        <div class="content">
+            <!-- Filtros -->
+            <div class="reports-filters">
+                <div class="filter-title">Filtrar Relatórios</div>
+                <div class="filter-options">
+                    <div class="form-group filter-select">
+                        <select class="form-control" id="filter-month">
+                            <option value="all">Todos os meses</option>
+                            <option value="setembro">Setembro</option>
+                            <option value="outubro">Outubro</option>
+                            <option value="novembro">Novembro</option>
+                            <option value="dezembro">Dezembro</option>
+                        </select>
+                    </div>
+                    <div class="form-group filter-select">
+                        <select class="form-control" id="filter-status">
+                            <option value="all">Todos os status</option>
+                            <option value="concluido">Concluído</option>
+                            <option value="andamento">Em andamento</option>
+                            <option value="nao-iniciado">Não iniciado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Relatórios -->
+            <div class="reports-container">
+                <div class="reports-header">
+                    <h2 class="reports-title">Relatórios de Desempenho</h2>
+                    <p class="reports-subtitle">Acompanhe seu progresso mensal</p>
+                </div>
+
+                <div class="reports-list" id="reports-list">
+                    <!-- Relatórios serão carregados via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div class="form-navigation">
+                <button class="btn btn-secondary" onclick="voltarParaDashboard()">
+                    ← Voltar ao Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Relatório -->
+    <div class="modal" id="report-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="fecharModal()">×</button>
+            <div class="modal-header">
+                <div class="modal-icon">📊</div>
+                <h3 class="modal-title" id="modal-title">Relatório de Desempenho</h3>
+                <p class="modal-subtitle" id="modal-subtitle">Período: </p>
+            </div>
+            <div class="modal-text" id="modal-content">
+                <!-- Conteúdo do relatório será carregado aqui -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
+                <button class="btn btn-primary" onclick="exportarRelatorio()">Exportar PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="relatorios.js"></script>
+</body>
+</html>

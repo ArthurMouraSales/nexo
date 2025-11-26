@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Acesso - Nexo</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nexo</h1>
+            <p>Conexão & Clareza</p>
+        </div>
+        
+        <div class="content">
+            <a class="back-link" href="login.html">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </a>
+            
+            <div class="welcome">
+                <h2>Recuperar Acesso</h2>
+                <p>Digite seu E-mail ou CPF cadastrado</p>
+            </div>
+            
+            <div class="success-message" id="recovery-success">
+                Instruções de recuperação enviadas para seu email!
+            </div>
+            
+            <div class="form-group">
+                <label for="recovery-email">Email ou CPF</label>
+                <input type="text" id="recovery-email" class="form-control" placeholder="Digite seu email ou CPF">
+                <div class="error" id="recovery-email-error">Por favor, insira um email ou CPF válido</div>
+            </div>
+            
+            <button id="continue-btn" class="btn">Continuar</button>
+            
+            <div class="instructions">
+                <p>Enviaremos um link de recuperação para o email cadastrado.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="codigo-login.js"></script>
+    <script>
+        const continueBtn = document.getElementById('continue-btn');
+        const recoverySuccess = document.getElementById('recovery-success');
+
+        continueBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const recoveryEmail = document.getElementById('recovery-email').value.trim();
+            const emailError = document.getElementById('recovery-email-error');
+            const emailInput = document.getElementById('recovery-email');
+            
+            emailError.style.display = 'none';
+            emailInput.classList.remove('error-border');
+            
+            if (!recoveryEmail) {
+                emailError.textContent = 'Por favor, insira um email ou CPF';
+                emailError.style.display = 'block';
+                emailInput.classList.add('error-border');
+                return;
+            }
+            
+            continueBtn.classList.add('loading');
+            
+            setTimeout(() => {
+                continueBtn.classList.remove('loading');
+                recoverySuccess.style.display = 'block';
+            }, 1500);
+        });
+
+        document.getElementById('recovery-email').addEventListener('input', function() {
+            const errorElement = document.getElementById('recovery-email-error');
+            if (this.value.trim()) {
+                errorElement.style.display = 'none';
+                this.classList.remove('error-border');
+            }
+        });
+    </script>
+</body>
+</html>
