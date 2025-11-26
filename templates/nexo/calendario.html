@@ -1,15 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário - Resumo Diário</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Calendário </h1>
+            <h1>Nexo</h1>
         </div>
         
         <div class="calendar-section">
@@ -21,7 +22,7 @@
                         <button class="nav-btn" id="todayBtn">Hoje</button>
                         <button class="nav-btn" id="nextMonth">&gt;</button>
                     </div>
-                    <div class="current-month" id="currentMonth">Novembro 2023</div>
+                    <div class="current-month" id="currentMonth">Novembro 2025</div>
                 </div>
                 
                 <div class="weekdays">
@@ -41,7 +42,7 @@
         <div class="daily-summary">
             <h2 class="section-title" id="dailySummaryTitle">Resumo Diário</h2>
             
-            <div class="time-slot" id="9:00AM">
+            <div class="time-slot" id="900AM">
                 <div class="time-header">
                     <h3 class="time-title">9:00 AM</h3>
                     <button class="add-btn">+</button>
@@ -51,7 +52,7 @@
                 </ul>
             </div>
             
-            <div class="time-slot" id="14:00PM">
+            <div class="time-slot" id="1400PM">
                 <div class="time-header">
                     <h3 class="time-title">14:00 PM</h3>
                     <button class="add-btn">+</button>
@@ -61,7 +62,7 @@
                 </ul>
             </div>
             
-            <div class="time-slot" id="18:00PM">
+            <div class="time-slot" id="1800PM">
                 <div class="time-header">
                     <h3 class="time-title">18:00 PM</h3>
                     <button class="add-btn">+</button>
@@ -88,6 +89,6 @@
         </div>
     </div>
 
-    <script src="calendario.js"></script>
+    <script src="{% static 'calendario.js' %}"></script>
 </body>
 </html>

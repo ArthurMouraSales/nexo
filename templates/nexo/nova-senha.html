@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senha Redefinida - Nexo</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
 <body>
     <div class="container">
@@ -31,6 +32,11 @@
                 <p>Você será redirecionado para a página de login</p>
             </div>
         </div>
-    </div>
+    </div> <script>
+        document.getElementById('finish-btn').addEventListener('click', function() {
+            // Redireciona para a tela de login
+            window.location.href = "{% url 'autenticacao' %}";
+        });
+    </script>
 </body>
 </html>

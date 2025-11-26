@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Acesso - Nexo</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
 <body>
     <div class="container">
@@ -13,67 +14,43 @@
             <p>Conexão & Clareza</p>
         </div>
         
-    <div class="content">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="error" style="display:block; text-align:center; margin-bottom:10px;">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+        <div class="content">
+            <a class="back-link" href="{% url 'autenticacao' %}">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Voltar
+            </a>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="error" style="display:block; text-align:center; margin-bottom:10px; color: #ef4444;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-        <form method="POST">
-            {% csrf_token %}
-            <div class="welcome">
-                <h2>Recuperar Acesso</h2>
-                <p>Digite seu E-mail ou CPF cadastrado</p>
+            <form id="formRecuperacao" method="POST">
+                {% csrf_token %}
+                <div class="welcome">
+                    <h2>Recuperar Acesso</h2>
+                    <p>Digite seu E-mail ou CPF cadastrado</p>
+                </div>
+            
+                <div class="form-group">
+                    <label for="recovery-email">Email ou CPF</label>
+                    <input type="text" id="recovery-email" name="email_ou_cpf" class="form-control" placeholder="Digite seu email ou CPF" required>
+                </div>
+            
+                <button type="submit" class="btn">Continuar</button>
+            </form>
+            
+            <div class="instructions">
+                <p>Enviaremos um código de verificação para o e-mail associado à conta.</p>
             </div>
-        
-            <div class="form-group">
-                <label for="recovery-email">Email ou CPF</label>
-                <input type="text" name="email_ou_cpf" class="form-control" placeholder="Digite seu email ou CPF" required>
-            </div>
-        
-            <button type="submit" class="btn">Continuar</button>
-        </form>
-        <div class="instructions"><p>Enviaremos um código para o e-mail cadastrado.</p></div>
-    </div>
+        </div>
     </div>
 
-    <script src="codigo-login.js"></script>
-    <script>
-        const continueBtn = document.getElementById('continue-btn');
-        const recoverySuccess = document.getElementById('recovery-success');
-
-        continueBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const recoveryEmail = document.getElementById('recovery-email').value.trim();
-            const emailError = document.getElementById('recovery-email-error');
-            const emailInput = document.getElementById('recovery-email');
-            
-            emailError.style.display = 'none';
-            emailInput.classList.remove('error-border');
-            
-            if (!recoveryEmail) {
-                emailError.textContent = 'Por favor, insira um email ou CPF';
-                emailError.style.display = 'block';
-                emailInput.classList.add('error-border');
-                return;
-            }
-            
-            continueBtn.classList.add('loading');
-            
-            setTimeout(() => {
-                continueBtn.classList.remove('loading');
-                recoverySuccess.style.display = 'block';
-            }, 1500);
-        });
-
-        document.getElementById('recovery-email').addEventListener('input', function() {
-            const errorElement = document.getElementById('recovery-email-error');
-            if (this.value.trim()) {
-                errorElement.style.display = 'none';
-                this.classList.remove('error-border');
-            }
-        });
-    </script>
+    <script src="{% static 'codigo-recuperacao.js' %}"></script>
 </body>
 </html>

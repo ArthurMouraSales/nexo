@@ -1022,3 +1022,198 @@ body {
     }
 }
 
+.calendar-section {
+    background-color: var(--surface);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.current-month {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-light);
+}
+
+.weekdays, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 8px;
+}
+
+.weekdays div {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%; 
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.day:hover:not(.empty) {
+    background-color: var(--surface-light);
+    border: 1px solid var(--primary-light);
+}
+
+.day.today {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.day.selected {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 0 10px rgba(7, 173, 221, 0.4);
+}
+
+.day.other-month {
+    color: var(--text-muted);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.daily-summary {
+    background-color: var(--surface);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+}
+
+.time-slot {
+    background-color: var(--surface-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--primary);
+}
+
+.time-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.time-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.add-btn {
+    background: none;
+    border: none;
+    color: var(--primary-light);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.activity-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 8px 0;
+    outline: none;
+}
+
+.activity-list {
+    list-style: none;
+    margin-top: 10px;
+    padding: 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.delete-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--error);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.stat-card {
+    background-color: var(--surface);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .day {
+        font-size: 12px;
+        height: 35px; 
+        width: 35px; 
+    }
+}

@@ -28,7 +28,7 @@ except OSError:
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'nexo/dashboard.html'
+    template_name = 'nexo/inicio.html'
 
 class CalendarioView(LoginRequiredMixin, View):
     template_name = 'nexo/calendario.html'

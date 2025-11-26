@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificar Identidade - Nexo</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
 </head>
 <body>
     <div class="container">
@@ -13,73 +14,29 @@
         </div>
         
         <div class="content">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error" style="display:block;">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="error" style="display:block; text-align: center; margin-bottom: 15px;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="welcome">
-            <h2>Verifique seu E-mail</h2>
-            <p>Digite o código enviado. (terminal do VS Code)</p>
+            <form id="formValidacao" method="POST">
+                {% csrf_token %}
+                <div class="welcome">
+                    <h2>Verifique seu E-mail</h2>
+                    <p>Digite o código enviado. (Verifique o terminal do VS Code)</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Código</label>
+                    <input type="text" name="codigo" class="form-control" placeholder="Digite o código" required style="text-align:center; letter-spacing: 5px; font-size: 20px;">
+                </div>
+                
+                <button type="submit" class="btn">Validar</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label>Código</label>
-            <input type="text" name="codigo" class="form-control" placeholder="Digite o código" required style="text-align:center; letter-spacing: 5px; font-size: 20px;">
-        </div>
-        <button type="submit" class="btn">Validar</button>
-    </form>
-</div>
     </div>
 
-    <script>
-        const emailOption = document.getElementById('option-email');
-        const smsOption = document.getElementById('option-sms');
-        const sendBtn = document.getElementById('send-btn');
-        let selectedMethod = null;
-
-        function selectVerificationMethod(method, element) {
-            document.querySelectorAll('.verification-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            element.classList.add('selected');
-            selectedMethod = method;
-            
-            sendBtn.disabled = false;
-        }
-
-        emailOption.addEventListener('click', () => {
-            selectVerificationMethod('email', emailOption);
-        });
-
-        smsOption.addEventListener('click', () => {
-            selectVerificationMethod('sms', smsOption);
-        });
-
-        sendBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            if (!selectedMethod) {
-                alert('Por favor, selecione um método de verificação.');
-                return;
-            }
-            
-            sendBtn.classList.add('loading');
-            sendBtn.disabled = true;
-            
-            setTimeout(() => {
-                sendBtn.classList.remove('loading');
-                
-                alert(`Código enviado via ${selectedMethod.toUpperCase()}!`);
-            }, 2000);
-        });
-
-        window.addEventListener('load', () => {
-            selectVerificationMethod('email', emailOption);
-        });
-    </script>
+    <script src="{% static 'codigo-validacao.js' %}"></script>
 </body>
 </html>

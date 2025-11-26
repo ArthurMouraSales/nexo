@@ -1,14 +1,22 @@
+/* static/calendario.js - Versão Corrigida e Robusta */
+
 let currentDate = new Date();
 let selectedDate = new Date();
 let activities = {};
 
 document.addEventListener('DOMContentLoaded', function() {
-    initializeCalendar();
-    initializeDailySummary();
-    setupEventListeners();
+    console.log("Sistema Nexo: Iniciando calendário...");
     
-    loadSavedData();
-    updateStats();
+    try {
+        initializeCalendar();
+        initializeDailySummary();
+        setupEventListeners();
+        loadSavedData();
+        updateStats();
+        console.log("Sistema Nexo: Calendário carregado com sucesso!");
+    } catch (error) {
+        console.error("Sistema Nexo: Erro ao carregar calendário:", error);
+    }
 });
 
 function initializeCalendar() {
@@ -19,6 +27,8 @@ function renderCalendar() {
     const calendarDays = document.getElementById('calendarDays');
     const currentMonthElement = document.getElementById('currentMonth');
     
+    if (!calendarDays || !currentMonthElement) return;
+
     calendarDays.innerHTML = '';
     
     const monthNames = [
@@ -33,11 +43,10 @@ function renderCalendar() {
     const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     
     const firstDayIndex = firstDay.getDay();
-    const lastDayIndex = lastDay.getDay();
     const daysInMonth = lastDay.getDate();
-    
     const prevMonthLastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
     
+    // Dias do mês anterior
     for (let i = firstDayIndex; i > 0; i--) {
         const dayElement = document.createElement('div');
         dayElement.className = 'day other-month';
@@ -45,6 +54,7 @@ function renderCalendar() {
         calendarDays.appendChild(dayElement);
     }
     
+    // Dias atuais
     const today = new Date();
     for (let i = 1; i <= daysInMonth; i++) {
         const dayElement = document.createElement('div');
@@ -73,6 +83,7 @@ function renderCalendar() {
         calendarDays.appendChild(dayElement);
     }
     
+    // Preencher resto da grade (total 42 células para manter altura fixa)
     const totalCells = 42; 
     const remainingCells = totalCells - (firstDayIndex + daysInMonth);
     
@@ -88,42 +99,72 @@ function initializeDailySummary() {
     const timeSlots = ['9:00 AM', '14:00 PM', '18:00 PM'];
     
     timeSlots.forEach(time => {
-        const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
-        const activityList = timeSlot.querySelector('.activity-list');
+        // Converte "9:00 AM" para "900AM" para bater com o ID do HTML
+        const idFormatado = time.replace(':', '').replace(' ', '');
+        const timeSlot = document.getElementById(idFormatado);
         
-        const addBtn = timeSlot.querySelector('.add-btn');
-        addBtn.addEventListener('click', function() {
-            addActivity(time);
-        });
-        
-        renderActivities(time, activityList);
+        if (timeSlot) {
+            const activityList = timeSlot.querySelector('.activity-list');
+            const addBtn = timeSlot.querySelector('.add-btn');
+            
+            if (addBtn) {
+                // Remove listeners antigos clonando o botão (truque para evitar duplicação)
+                const newBtn = addBtn.cloneNode(true);
+                addBtn.parentNode.replaceChild(newBtn, addBtn);
+                
+                newBtn.addEventListener('click', function() {
+                    addActivity(time);
+                });
+            }
+            
+            if (activityList) {
+                renderActivities(time, activityList);
+            }
+        } else {
+            console.warn(`Elemento de horário não encontrado: ${idFormatado}`);
+        }
     });
 }
 
 function setupEventListeners() {
-    document.getElementById('prevMonth').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    });
+    const prevBtn = document.getElementById('prevMonth');
+    const nextBtn = document.getElementById('nextMonth');
+    const todayBtn = document.getElementById('todayBtn');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+    }
     
-    document.getElementById('nextMonth').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    });
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+    }
     
-    document.getElementById('todayBtn').addEventListener('click', function() {
-        currentDate = new Date();
-        selectedDate = new Date();
-        renderCalendar();
-        updateDailySummaryTitle();
-        loadActivitiesForDate(selectedDate);
-    });
+    if (todayBtn) {
+        todayBtn.addEventListener('click', function() {
+            currentDate = new Date();
+            selectedDate = new Date();
+            renderCalendar();
+            updateDailySummaryTitle();
+            loadActivitiesForDate(selectedDate);
+        });
+    }
     
     document.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && e.target.classList.contains('activity-input')) {
             const timeSlot = e.target.closest('.time-slot');
-            const time = timeSlot.querySelector('.time-title').textContent;
-            addActivity(time);
+            if (timeSlot) {
+                const timeTitle = timeSlot.querySelector('.time-title');
+                if (timeTitle) {
+                    const time = timeTitle.textContent.trim();
+                    addActivity(time);
+                }
+            }
         }
     });
 }
@@ -142,7 +183,6 @@ function selectDate(dayElement) {
     selectedDate = new Date(year, month, day);
     
     updateDailySummaryTitle();
-    
     loadActivitiesForDate(selectedDate);
     updateStats();
 }
@@ -153,12 +193,17 @@ function updateDailySummaryTitle() {
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ];
     
-    document.getElementById('dailySummaryTitle').textContent = 
-        `Resumo Diário - ${selectedDate.getDate()} de ${monthNames[selectedDate.getMonth()]}`;
+    const title = document.getElementById('dailySummaryTitle');
+    if (title) {
+        title.textContent = `Resumo Diário - ${selectedDate.getDate()} de ${monthNames[selectedDate.getMonth()]}`;
+    }
 }
 
 function addActivity(time) {
-    const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
+    const idFormatado = time.replace(':', '').replace(' ', '');
+    const timeSlot = document.getElementById(idFormatado);
+    if (!timeSlot) return;
+
     const activityInput = timeSlot.querySelector('.activity-input');
     const activityText = activityInput.value.trim();
     
@@ -189,6 +234,7 @@ function addActivity(time) {
 }
 
 function renderActivities(time, activityList) {
+    if (!activityList) return;
     activityList.innerHTML = '';
     
     const dateKey = selectedDate.toISOString().split('T')[0];
@@ -200,6 +246,9 @@ function renderActivities(time, activityList) {
         const emptyMessage = document.createElement('li');
         emptyMessage.className = 'empty-message';
         emptyMessage.textContent = 'Nenhuma atividade adicionada';
+        emptyMessage.style.opacity = '0.5';
+        emptyMessage.style.fontSize = '0.9rem';
+        emptyMessage.style.padding = '10px 0';
         activityList.appendChild(emptyMessage);
         return;
     }
@@ -207,30 +256,32 @@ function renderActivities(time, activityList) {
     timeActivities.forEach((activity, index) => {
         const activityItem = document.createElement('li');
         activityItem.className = 'activity-item';
+        
         if (activity.completed) {
-            activityItem.style.opacity = '0.7';
-            activityItem.style.borderLeftColor = '#2ecc71';
+            activityItem.style.opacity = '0.5';
+            activityItem.style.textDecoration = 'line-through';
         }
         
         const activityText = document.createElement('span');
         activityText.className = 'activity-text';
         activityText.textContent = activity.text;
-        if (activity.completed) {
-            activityText.style.textDecoration = 'line-through';
-        }
+        activityText.style.flex = '1';
+        activityText.style.marginLeft = '10px';
         
         const completeBtn = document.createElement('button');
         completeBtn.className = 'add-btn';
-        completeBtn.innerHTML = activity.completed ? '✓' : '○';
-        completeBtn.style.marginRight = '10px';
-        completeBtn.style.fontSize = '0.9rem';
+        completeBtn.innerHTML = activity.completed ? 'Desfazer' : 'Concluir';
+        completeBtn.style.fontSize = '0.8rem';
+        completeBtn.style.color = activity.completed ? '#f39c12' : '#2ecc71';
         completeBtn.addEventListener('click', function() {
             toggleActivityCompletion(time, index);
         });
         
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
-        deleteBtn.innerHTML = '&times;';
+        deleteBtn.innerHTML = 'Excluir'; // Texto explícito é melhor que ícone que pode falhar
+        deleteBtn.style.marginLeft = '10px';
+        deleteBtn.style.fontSize = '0.8rem';
         deleteBtn.addEventListener('click', function() {
             deleteActivity(time, index);
         });
@@ -245,12 +296,11 @@ function renderActivities(time, activityList) {
 function toggleActivityCompletion(time, index) {
     const dateKey = selectedDate.toISOString().split('T')[0];
     
-    if (activities[dateKey] && activities[dateKey][time] && 
-        activities[dateKey][time].length > index) {
-        
+    if (activities[dateKey] && activities[dateKey][time]) {
         activities[dateKey][time][index].completed = !activities[dateKey][time][index].completed;
         
-        const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
+        const idFormatado = time.replace(':', '').replace(' ', '');
+        const timeSlot = document.getElementById(idFormatado);
         const activityList = timeSlot.querySelector('.activity-list');
         renderActivities(time, activityList);
         
@@ -262,12 +312,11 @@ function toggleActivityCompletion(time, index) {
 function deleteActivity(time, index) {
     const dateKey = selectedDate.toISOString().split('T')[0];
     
-    if (activities[dateKey] && activities[dateKey][time] && 
-        activities[dateKey][time].length > index) {
-        
+    if (activities[dateKey] && activities[dateKey][time]) {
         activities[dateKey][time].splice(index, 1);
         
-        const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
+        const idFormatado = time.replace(':', '').replace(' ', '');
+        const timeSlot = document.getElementById(idFormatado);
         const activityList = timeSlot.querySelector('.activity-list');
         renderActivities(time, activityList);
         
@@ -279,9 +328,12 @@ function deleteActivity(time, index) {
 function loadActivitiesForDate(date) {
     const timeSlots = ['9:00 AM', '14:00 PM', '18:00 PM'];
     timeSlots.forEach(time => {
-        const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
-        const activityList = timeSlot.querySelector('.activity-list');
-        renderActivities(time, activityList);
+        const idFormatado = time.replace(':', '').replace(' ', '');
+        const timeSlot = document.getElementById(idFormatado);
+        if (timeSlot) {
+            const activityList = timeSlot.querySelector('.activity-list');
+            renderActivities(time, activityList);
+        }
     });
     
     updateStats();
@@ -299,11 +351,15 @@ function updateStats() {
         });
     }
     
-    document.getElementById('totalActivities').textContent = total;
-    document.getElementById('completedActivities').textContent = completed;
+    const totalEl = document.getElementById('totalActivities');
+    const completedEl = document.getElementById('completedActivities');
+    const rateEl = document.getElementById('productivityRate');
+
+    if(totalEl) totalEl.textContent = total;
+    if(completedEl) completedEl.textContent = completed;
     
     const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
-    document.getElementById('productivityRate').textContent = `${rate}%`;
+    if(rateEl) rateEl.textContent = `${rate}%`;
 }
 
 function saveData() {
@@ -316,27 +372,27 @@ function saveData() {
 }
 
 function loadSavedData() {
-    const savedData = localStorage.getItem('calendarData');
-    if (savedData) {
-        const data = JSON.parse(savedData);
-        activities = data.activities || {};
-        
-        if (data.currentDate) {
-            currentDate = new Date(data.currentDate);
+    try {
+        const savedData = localStorage.getItem('calendarData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            activities = data.activities || {};
+            
+            if (data.currentDate) {
+                currentDate = new Date(data.currentDate);
+            }
+            
+            if (data.selectedDate) {
+                selectedDate = new Date(data.selectedDate);
+            }
+            
+            renderCalendar();
+            updateDailySummaryTitle();
+            loadActivitiesForDate(selectedDate);
         }
-        
-        if (data.selectedDate) {
-            selectedDate = new Date(data.selectedDate);
-        }
-        
-        renderCalendar();
-        updateDailySummaryTitle();
-        
-        const timeSlots = ['9:00 AM', '14:00 PM', '18:00 PM'];
-        timeSlots.forEach(time => {
-            const timeSlot = document.querySelector(`#${time.replace(':', '').replace(' ', '')}`);
-            const activityList = timeSlot.querySelector('.activity-list');
-            renderActivities(time, activityList);
-        });
+    } catch (e) {
+        console.error("Erro ao carregar dados salvos:", e);
+        // Se der erro, reinicia limpo para não travar o app
+        activities = {};
     }
 }

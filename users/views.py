@@ -2,10 +2,11 @@ import random
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, View
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib import messages
+from django.db.models import Q
 from .forms import CadastroUsuarioForm
 from .models import Usuario
 
@@ -41,17 +42,13 @@ class RecuperacaoSolicitarView(View):
     def post(self, request):
         email_ou_cpf = request.POST.get('email_ou_cpf')
         try:
-            # Tenta achar por email ou CPF
-            user = Usuario.objects.get(models.Q(email=email_ou_cpf) | models.Q(cpf=email_ou_cpf))
+            user = Usuario.objects.get(Q(email=email_ou_cpf) | Q(cpf=email_ou_cpf))
             
-            # Gera código de 6 dígitos
             codigo = str(random.randint(100000, 999999))
             
-            # Salva na sessão (simples e funcional para protótipo)
             request.session['recuperacao_codigo'] = codigo
             request.session['recuperacao_user_id'] = user.id
             
-            # Envia e-mail (vai aparecer no seu terminal)
             send_mail(
                 'Código de Recuperação - Nexo',
                 f'Seu código de verificação é: {codigo}',
@@ -79,13 +76,14 @@ class RecuperacaoValidarView(View):
         codigo_real = request.session.get('recuperacao_codigo')
         
         if codigo_digitado == codigo_real:
-            return redirect('recuperacao_senha')
+            # CORREÇÃO AQUI: O nome correto da URL é 'recuperacao_nova_senha'
+            return redirect('recuperacao_nova_senha')
         else:
             messages.error(request, "Código inválido.")
             return render(request, self.template_name)
 
 class RecuperacaoNovaSenhaView(View):
-    template_name = 'nexo/esqueci-senha.html' # Note que este é o nome do seu arquivo de "Nova Senha"
+    template_name = 'nexo/esqueci-senha.html'
 
     def get(self, request):
         if 'recuperacao_user_id' not in request.session:
@@ -102,11 +100,13 @@ class RecuperacaoNovaSenhaView(View):
             user.set_password(senha1)
             user.save()
             
-            del request.session['recuperacao_codigo']
-            del request.session['recuperacao_user_id']
+            if 'recuperacao_codigo' in request.session:
+                del request.session['recuperacao_codigo']
+            if 'recuperacao_user_id' in request.session:
+                del request.session['recuperacao_user_id']
             
             messages.success(request, "Senha alterada com sucesso!")
-            return redirect('autenticacao') # Redireciona para Login
+            return redirect('autenticacao')
         else:
             messages.error(request, "As senhas não coincidem.")
             return render(request, self.template_name)

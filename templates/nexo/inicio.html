@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexo - Dashboard</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -18,23 +19,29 @@
                 <div class="carousel-container">
                     <div class="carousel" id="carousel">
                         <div class="carousel-slide">
-                            <img src="file:///C:/Users/salam/Downloads/autismo_Foto-Freepik.webp" alt="Tecnologia em Saúde">
+                            <div style="width:100%; height:100%; background: linear-gradient(45deg, #07addd, #0599c4); display:flex; align-items:center; justify-content:center; color:white;">
+                                <h2>Conexão</h2>
+                            </div>
                             <div class="slide-content">
                                 <h3>Cada peça é um avanço</h3>
                                 <p>No NEXO, celebramos cada conquista ao lado de quem mais importa</p>
                             </div>
                         </div>
                         <div class="carousel-slide">
-                            <img src="c:\Users\salam\Downloads\3633.jpg" alt="Cuidado Personalizado">
+                            <div style="width:100%; height:100%; background: linear-gradient(45deg, #06d6a0, #04b083); display:flex; align-items:center; justify-content:center; color:white;">
+                                <h2>Cuidado</h2>
+                            </div>
                             <div class="slide-content">
-                                <h3>Cuidar com empatia, acolher com amor</h3>
+                                <h3>Cuidar com empatia</h3>
                                 <p>O NEXO conecta famílias, terapeutas e progresso.</p>
                             </div>
                         </div>
                         <div class="carousel-slide">
-                            <img src="c:\Users\salam\Downloads\8a3a1826b027f2273b9a800245ee5516.jpg" alt="Suporte 24/7">
+                            <div style="width:100%; height:100%; background: linear-gradient(45deg, #2ac1f0, #07addd); display:flex; align-items:center; justify-content:center; color:white;">
+                                <h2>Apoio</h2>
+                            </div>
                             <div class="slide-content">
-                                <h3>Apoio constante, desenvolvimento contínuo</h3>
+                                <h3>Apoio constante</h3>
                                 <p>O NEXO ajuda a transformar rotina em evolução</p>
                             </div>
                         </div>
@@ -60,9 +67,9 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-info">
-                    <h2>Olá, Usuário</h2>
+                    <h2>Olá, {{ user.nome_social|default:user.nome_completo }}</h2>
                     <p><strong>Acompanhamento Nexo</strong></p>
-                    <p class="cpf">000.000.000-00</p>
+                    <p class="cpf">{{ user.cpf }}</p>
                 </div>
             </div>
             
@@ -135,7 +142,7 @@
             </div>
             <p class="modal-text">Acesse relatórios completos com métricas de progresso, evolução temporal e insights personalizados para o seu desenvolvimento.</p>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="generateReport()">
+                <button class="btn btn-primary" onclick="window.location.href='{% url 'relatorio_pdf' %}'">
                     <i class="fas fa-download"></i> Gerar Relatório
                 </button>
                 <button class="btn btn-secondary" onclick="closeModal('relatorios')">
@@ -157,7 +164,7 @@
             </div>
             <p class="modal-text">Visualize sua agenda, marque novas consultas e receba lembretes automáticos para não perder nenhum acompanhamento importante.</p>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="viewSchedule()">
+                <button class="btn btn-primary" onclick="window.location.href='{% url 'calendario' %}'">
                     <i class="fas fa-eye"></i> Ver Agenda
                 </button>
                 <button class="btn btn-secondary" onclick="closeModal('calendario')">
@@ -179,7 +186,7 @@
             </div>
             <p class="modal-text">Nossa equipe especializada está disponível para esclarecer dúvidas, resolver problemas e oferecer o suporte necessário para sua jornada.</p>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="contactSupport()">
+                <button class="btn btn-primary" onclick="window.location.href='mailto:suporte@nexo.app'">
                     <i class="fas fa-headset"></i> Falar com Suporte
                 </button>
                 <button class="btn btn-secondary" onclick="closeModal('suporte')">
@@ -189,6 +196,6 @@
         </div>
     </div>
 
-    <script src="inicio.js"></script>
+    <script src="{% static 'inicio.js' %}"></script>
 </body>
 </html>

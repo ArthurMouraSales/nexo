@@ -1,48 +1,19 @@
-
 document.addEventListener('DOMContentLoaded', function() {
-    const formulario = document.getElementById('formularioRecuperacao');
+    const form = document.getElementById('formRecuperacao');
     
-
-    document.querySelectorAll('.botao-mostrar').forEach(botao => {
-        botao.addEventListener('click', function() {
-            const inputSenha = this.previousElementSibling;
-            if (inputSenha.type === 'password') {
-                inputSenha.type = 'text';
-                this.textContent = '🙈';
-            } else {
-                inputSenha.type = 'password';
-                this.textContent = '👁️';
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const btn = form.querySelector('button[type="submit"]');
+            const input = form.querySelector('input[name="email_ou_cpf"]');
+            
+            // Se o campo estiver preenchido, muda o botão para loading
+            if (input && input.value.trim() !== "") {
+                if (btn) {
+                    btn.classList.add('loading');
+                    btn.textContent = 'Enviando...';
+                    // Não usamos e.preventDefault(), deixamos o form ser enviado
+                }
             }
         });
-    });
-
-    formulario.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('emailRecuperacao').value.trim();
-        
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            mostrarMensagem('Por favor, insira um email válido.', 'erro');
-            return;
-        }
-
-        mostrarMensagem(`Email de recuperação enviado para ${email}! Verifique sua caixa de entrada.`, 'sucesso');
-        
-
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 3000);
-    });
-
-    function mostrarMensagem(texto, tipo) {
-        document.querySelectorAll('.mensagem').forEach(msg => msg.remove());
-        
-        const mensagemDiv = document.createElement('div');
-        mensagemDiv.className = `mensagem ${tipo}`;
-        mensagemDiv.textContent = texto;
-        
-        formulario.insertBefore(mensagemDiv, formulario.firstChild);
-        
-        mensagemDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });
