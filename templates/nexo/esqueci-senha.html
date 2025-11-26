@@ -5,45 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Nova Senha - Nexo</title>
     <link rel="stylesheet" href="estilo.css">
-    <style>
-        .password-strength {
-            margin-top: 8px;
-            font-size: 12px;
-            display: none;
-        }
-        
-        .strength-weak { color: var(--error); }
-        .strength-medium { color: #f59e0b; }
-        .strength-strong { color: var(--success); }
-        
-        .password-requirements {
-            background-color: var(--surface-light);
-            border-radius: 8px;
-            padding: 16px;
-            margin: 16px 0;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .requirement {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-        
-        .requirement:last-child {
-            margin-bottom: 0;
-        }
-        
-        .requirement svg {
-            flex-shrink: 0;
-        }
-        
-        .requirement.met {
-            color: var(--success);
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -51,78 +12,27 @@
             <h1>Nexo</h1>
             <p>Conexão & Clareza</p>
         </div>
+    </div>
         
-        <div class="content">
-            <a class="back-link" href="codigo-verificacao.html">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Voltar
-            </a>
-            
+    <div class="content">
+        <form method="POST">
+            {% csrf_token %}
             <div class="welcome">
                 <h2>Crie uma nova senha</h2>
-                <p>Sua nova senha deve ser forte e diferente da anterior.</p>
-            </div>
-
-            <div class="password-requirements">
-                <div class="requirement" id="req-length">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Mínimo 8 caracteres</span>
-                </div>
-                <div class="requirement" id="req-uppercase">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Pelo menos 1 letra maiúscula</span>
-                </div>
-                <div class="requirement" id="req-lowercase">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Pelo menos 1 letra minúscula</span>
-                </div>
-                <div class="requirement" id="req-number">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Pelo menos 1 número</span>
-                </div>
-                <div class="requirement" id="req-special">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>Pelo menos 1 caractere especial</span>
-                </div>
             </div>
             
             <div class="form-group">
-                <label for="new-password">Nova Senha</label>
-                <div class="password-container">
-                    <input type="password" id="new-password" class="form-control" placeholder="Digite sua nova senha">
-                    <button type="button" class="password-toggle" id="toggle-new-password">Mostrar</button>
-                </div>
-                <div class="password-strength" id="password-strength"></div>
-                <div class="error" id="new-password-error">A senha não atende aos requisitos mínimos</div>
+                <label>Nova Senha</label>
+                <input type="password" name="senha1" class="form-control" required>
             </div>
             
             <div class="form-group">
-                <label for="confirm-password">Confirmar Nova Senha</label>
-                <div class="password-container">
-                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirme sua nova senha">
-                    <button type="button" class="password-toggle" id="toggle-confirm-password">Mostrar</button>
-                </div>
-                <div class="error" id="confirm-password-error">As senhas não coincidem</div>
+                <label>Confirmar Nova Senha</label>
+                <input type="password" name="senha2" class="form-control" required>
             </div>
             
-            <button id="save-password-btn" class="btn" disabled>Salvar senha</button>
-            
-            <div class="instructions">
-                <p>Use uma senha única que você não utiliza em outros serviços</p>
-            </div>
-        </div>
+            <button type="submit" class="btn">Salvar senha</button>
+        </form>
     </div>
 </body>
 </html>

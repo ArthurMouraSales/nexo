@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Desempenho - Nexo</title>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; color: #333; line-height: 1.5; }
+        .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #07addd; padding-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: #07addd; }
+        .title { font-size: 20px; margin-top: 10px; }
+        .section { margin-bottom: 30px; }
+        .section-title { font-size: 16px; font-weight: bold; color: #07addd; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
+        .info-grid { display: table; width: 100%; }
+        .info-row { display: table-row; }
+        .info-cell { display: table-cell; width: 50%; padding: 5px; }
+        .label { font-weight: bold; font-size: 12px; color: #666; }
+        .value { font-size: 14px; }
+        .stats-box { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 10px; }
+        .stat-item { display: inline-block; width: 30%; text-align: center; }
+        .stat-number { font-size: 24px; font-weight: bold; color: #07addd; display: block; }
+        .stat-label { font-size: 12px; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        th { background-color: #f0f0f0; text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+        td { padding: 8px; border-bottom: 1px solid #eee; }
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Nexo</div>
+        <div class="title">Relatório de Desempenho e Evolução</div>
+        <div>Gerado em: {% now "d/m/Y H:i" %}</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">1. Identificação do Paciente</div>
+        <div class="info-grid">
+            <div class="info-row">
+                <div class="info-cell">
+                    <div class="label">Nome Completo</div>
+                    <div class="value">{{ usuario.nome_completo }}</div>
+                </div>
+                <div class="info-cell">
+                    <div class="label">Idade</div>
+                    <div class="value">{{ usuario.data_nascimento|timesince }}</div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-cell">
+                    <div class="label">Responsável</div>
+                    <div class="value">{{ usuario.nome_responsavel }}</div>
+                </div>
+                <div class="info-cell">
+                    <div class="label">Grau TEA</div>
+                    <div class="value">{{ perfil.get_grau_tea_display|default:"Não informado" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">2. Resumo Estatístico (Período do Relatório)</div>
+        <div class="stats-box">
+            <div class="stat-item">
+                <span class="stat-number">{{ total_dias_registrados }}</span>
+                <span class="stat-label">Dias Registrados</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ dias_completos }}</span>
+                <span class="stat-label">Dias Completos</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">{{ dias_parciais }}</span>
+                <span class="stat-label">Dias Parciais</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. Histórico Detalhado (Últimos Registros)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">Data</th>
+                    <th width="15%">Status</th>
+                    <th width="70%">Resumo do Dia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in registros %}
+                <tr>
+                    <td>{{ registro.data_selecionada|date:"d/m/Y" }}</td>
+                    <td>{{ registro.status_dia }}</td>
+                    <td>{{ registro.resumo_diario|default:"-"|truncatechars:100 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 20px;">Nenhum registro encontrado neste período.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Documento gerado pela plataforma Nexo.
+    </div>
+</body>
+</html>

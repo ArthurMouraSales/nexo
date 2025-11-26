@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.db import transaction
 from datetime import date
 from .models import Usuario
@@ -72,3 +72,7 @@ class CadastroUsuarioForm(UserCreationForm):
         )
         return user
 
+class EdicaoUsuarioAdminForm(UserChangeForm):
+    class Meta:
+        model = Usuario
+        fields = '__all__'
