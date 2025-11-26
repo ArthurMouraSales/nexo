@@ -18,7 +18,7 @@ class CadastroSucessoView(TemplateView):
 
 class LoginView(LoginView):
     form_class = AuthenticationForm
-    template_name = 'nexo/autenticacao_list.html'
+    template_name = 'nexo/autenticacao.html'
     redirect_authenticated_user = True
 
     def get_success_url(self):

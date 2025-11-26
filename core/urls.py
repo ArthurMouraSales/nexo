@@ -7,7 +7,7 @@ from nexo.views import DashboardView, CalendarioView, RelatorioPDFView
 from django.contrib.auth.views import LogoutView 
 
 urlpatterns = [
-    path('', LoginView.as_view(), name='login'), 
+    path('', LoginView.as_view(), name='autenticacao'), 
     path('cadastro/', CadastroView.as_view(), name='cadastro'), 
     path('cadastro_sucesso/', CadastroSucessoView.as_view(), name='cadastro_sucesso'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
