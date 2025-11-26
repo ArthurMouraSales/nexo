@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Nexo</title>
+    <link rel="stylesheet" href="{% static 'estilo.css' %}">
+</head>
+<body class="dark-theme centered-body">
+    <div class="login-container">
+        <div class="logo-area">
+            <img src="{% static 'logo.jpg' %}" alt="Nexo" class="login-logo">
+        </div>
+        <h2 class="welcome-text">Bem-vindo(a) ao Nexo</h2>
+        <form method="POST" action="{% url 'login' %}" id="formularioLogin" class="login-form">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="mensagem erro">Usuário ou senha incorretos.</div>
+            {% endif %}
+            <div class="input-pill white">
+                <i class="fas fa-envelope icon-black"></i>
+                <input type="email" id="email" name="username" placeholder="Email ou CPF" required>
+            </div>
+            <div class="input-pill white">
+                <i class="fas fa-lock icon-black"></i>
+                <input type="password" id="senha" name="password" placeholder="Senha" required>
+            </div>
+            <button type="submit" class="botao azul">Entrar</button>
+            <a href="{% url 'esqueci_senha' %}" class="btn-pill btn-outline-red">
+                Esqueci minha senha
+            </a>
+            <div class="divisor-text">
+                <span>Não tem uma conta?</span>
+            </div>
+            <a href="{% url 'cadastro' %}" class="btn-pill btn-outline-red">
+                Cadastrar-se
+            </a>
+        </form>
+    </div>
+    <script src="{% static 'codigo-login.js' %}"></script>
+</body>
+</html>

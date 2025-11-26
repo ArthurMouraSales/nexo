@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const barraForca = document.querySelector('.barra-forca');
     const textoForca = document.querySelector('.texto-forca');
     const cpfInput = document.getElementById('cpf');
+    const telefoneInput = document.getElementById('telefone');
+    const cepInput = document.getElementById('cep');
 
 
     document.querySelectorAll('.botao-mostrar').forEach(botao => {
@@ -21,22 +23,35 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    cpfInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        
-        if (value.length > 11) {
-            value = value.substring(0, 11);
-        }
-        
-        if (value.length <= 11) {
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
             value = value.replace(/(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
             value = value.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-        }
-        
-        e.target.value = value;
-    });
+            e.target.value = value;
+        });
+    }
 
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+            e.target.value = value;
+        });
+    }
+
+    if (cepInput) {
+        cepInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 8) value = value.substring(0, 8);
+            value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+    }
 
     senhaInput.addEventListener('input', function() {
         const senha = senhaInput.value;
