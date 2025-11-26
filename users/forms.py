@@ -1,10 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
+from .models import Usuario
 from django import forms
-from nexo.models import PacienteProfile 
+from nexo.models import PerfilPaciente 
 from django.db import transaction
 
-class CustomUserCreationForm(UserCreationForm):
+class FormCadastro(UserCreationForm):
+
     cep = forms.CharField(max_length=9, required=False)
     logradouro = forms.CharField(max_length=255, required=False)
     numero = forms.CharField(max_length=10, required=False)
@@ -30,9 +31,9 @@ class CustomUserCreationForm(UserCreationForm):
     alergias = forms.CharField(widget=forms.Textarea, required=False)
     observacoes = forms.CharField(widget=forms.Textarea, required=False)
 
-    #forms to create new users
+    #criar novo usuário
     class Meta(UserCreationForm.Meta):
-        model = CustomUser
+        model = Usuario
         fields = ('email', 'nome_completo', 'cpf', 'data_nascimento', 'contato', 'nome_social', 'genero', 'nome_responsavel')
 
     @transaction.atomic
@@ -46,7 +47,7 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         
-        profile = PacienteProfile(
+        profile = PerfilPaciente(
             user=user,
             cep=self.cleaned_data.get('cep'),
             logradouro=self.cleaned_data.get('logradouro'),
@@ -69,26 +70,11 @@ class CustomUserCreationForm(UserCreationForm):
         return user
     
 
-class CustomUserChangeForm(UserChangeForm):
+class FormEdicaoAdmin(UserChangeForm):
     #form to change existing users (admin page)
     class Meta:
-        model = CustomUser
-        fields = (
-            'email', 
-            'nome_completo', 
-            'cpf', 
-            'data_nascimento', 
-            'contato',
-            'nome_social',
-            'genero',
-            'nome_responsavel',
-            'status',
-            'is_active', 
-            'is_staff', 
-            'is_superuser',
-            'groups',
-            'user_permissions'
-        )
+        model = Usuario
+        fields = ('__all__')
 
         error_messages = {
             'email': {

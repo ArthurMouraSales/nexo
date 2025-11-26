@@ -1,6 +1,4 @@
 import os
-import sys
-from django.conf import settings
 from django.views.generic import View, TemplateView 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
@@ -8,7 +6,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import render, redirect
 from datetime import date
 from .models import RegistroCalendario
-from .forms import RegistroCalendarioForm
+from .forms import FormularioCalendario
 
 gtk3_folder = r"C:\Program Files\GTK3-Runtime Win64\bin"
 
@@ -37,12 +35,12 @@ class CalendarioView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         registros = RegistroCalendario.objects.filter(paciente=request.user).order_by('-data_selecionada')
-        form = RegistroCalendarioForm(initial={'data_selecionada': date.today()})
+        form = FormularioCalendario(initial={'data_selecionada': date.today()})
         context = {'form': form, 'meus_registros': registros}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = RegistroCalendarioForm(request.POST)
+        form = FormularioCalendario(request.POST)
         if form.is_valid():
             data = form.cleaned_data['data_selecionada']
             registro, created = RegistroCalendario.objects.get_or_create(
@@ -69,16 +67,16 @@ class RelatorioPDFView(LoginRequiredMixin, View):
         user = request.user
         
         try:
-            profile = user.perfil
+            perfil = user.perfil
         except AttributeError:
-            profile = None
+            perfil = None
 
         registros_calendario = RegistroCalendario.objects.filter(paciente=user)
         total_dias_registrados = registros_calendario.count()
 
         contexto = {
             'usuario': user,
-            'perfil': profile,
+            'perfil': perfil,
             'total_dias_registrados': total_dias_registrados,
             'registros': registros_calendario.order_by('-data_selecionada')[:10] 
         }

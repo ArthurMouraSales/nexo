@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-class CustomUserManager(BaseUserManager):
+class GerenciadorUsuario(BaseUserManager):
     def create_user(self, email, nome_completo, cpf, data_nascimento, contato, password=None, **extra_fields):
         if not email:
             raise ValueError('O email deve ser fornecido')
@@ -22,7 +22,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, nome_completo, cpf, data_nascimento, contato, password, **extra_fields)
 
-class CustomUser(AbstractUser):
+class Usuario(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
     nome_completo = models.CharField(max_length=150, null=False)
@@ -37,9 +37,8 @@ class CustomUser(AbstractUser):
     status_choices = [ ('ativo', 'Ativo'), ('desativado', 'Desativado'), ('suspenso', 'Suspenso'), ('cancelado', 'Cancelado'),]
     status = models.CharField(max_length=20, choices=status_choices, default='ativo')
 
-    objects = CustomUserManager()
+    objects = GerenciadorUsuario()
 
-    #email is the login field
     USERNAME_FIELD = 'email'
 
     REQUIRED_FIELDS = ['nome_completo', 'cpf', 'data_nascimento', 'contato', 'nome_social', 'genero', 'nome_responsavel']

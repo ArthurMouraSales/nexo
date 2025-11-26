@@ -1,7 +1,7 @@
 from django import forms
 from .models import RegistroCalendario
 
-class RegistroCalendarioForm(forms.ModelForm):
+class FormularioCalendario(forms.ModelForm):
     data_selecionada = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date'}),
         label="Selecione o dia"

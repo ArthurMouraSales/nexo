@@ -1,23 +1,19 @@
 from django.db import models
-from users.models import CustomUser
+from users.models import Usuario
 from django.conf import settings
 from simple_history.models import HistoricalRecords
 
-class PacienteProfile(models.Model):
+class PerfilPaciente(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='perfil')
 
-    #sync with CustomUser
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='perfil')
-
-    #endereço fields
     cep = models.CharField(max_length=10, null=False)
     logradouro = models.CharField(max_length=150, null=False)
     numero = models.CharField(max_length=10, null=False)
     complemento = models.CharField(max_length=150, blank=True)
     bairro = models.CharField(max_length=100, null=False)
     municipio = models.CharField(max_length=100, null=False)
-    uf = models.CharField(max_length=2, null=False)  # Estado
+    uf = models.CharField(max_length=2, null=False) 
 
-    #medical fields
     grau_tea_choices = [('nivel 1', 'Nível 1'), ('nivel 2', 'Nível 2'), ('nivel 3', 'Nível 3')]
     grau_tea = models.CharField(max_length=20, choices=grau_tea_choices, null=False)
     comorbidades = models.TextField(blank=True)
@@ -29,7 +25,7 @@ class PacienteProfile(models.Model):
     medicacoes = models.TextField(blank=True)
     observacoes = models.TextField(blank=True)
 
-    #chamar nome completo do usuário ao inves do user (admin functionality)
+    #chamar nome completo do usuário ao inves do usuario
     def __str__(self):
         return self.user.nome_completo
 
@@ -74,30 +70,20 @@ class relatorio(models.Model):
 
 
 class RegistroCalendario(models.Model):
-    paciente = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='registros_calendario'
-    )
-    
+  
+    paciente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='registros_calendario')
     data_selecionada = models.DateField()
     
-    # Campos de texto para as atividades
     resumo_diario = models.TextField(blank=True, null=True)
     descricao_matutino = models.TextField(blank=True, null=True)
     descricao_vespertino = models.TextField(blank=True, null=True)
     descricao_noturno = models.TextField(blank=True, null=True)
     
-    status_dia = models.CharField(max_length=20, default='Não preenchido')
+    status_dia = models.CharField(max_length=20, default='Parcial')
     
-    responsavel_pelo_registro = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        related_name='registros_feitos'
-    )
-    
+    responsavel_registro = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='registros_criados')
     ultima_atualizacao = models.DateTimeField(auto_now=True)
+    
     history = HistoricalRecords()
 
     class Meta:

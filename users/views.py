@@ -8,22 +8,20 @@ from .forms import CustomUserCreationForm
 class InicioView(TemplateView):
     template_name = 'nexo/inicio.html'
 
-class SignUpView(CreateView):
-    #view to register new users
+class CadastroView(CreateView):
     form_class = CustomUserCreationForm
-    #redirect to login page
-    success_url = reverse_lazy('login') 
-    #use custom template
+    success_url = reverse_lazy('cadastro_sucesso') 
     template_name = 'nexo/cadastro_list.html'
 
-class CustomLoginView(LoginView):
-    #custom login view
+class CadastroSucessoView(TemplateView):
+    template_name = 'nexo/cadastro_sucesso.html'
+
+class LoginView(LoginView):
     form_class = AuthenticationForm
     template_name = 'nexo/autenticacao_list.html'
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        #redirect to dashboard after login
         return reverse_lazy('dashboard') 
     
     def form_invalid(self, form):
